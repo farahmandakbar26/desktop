@@ -1,6 +1,6 @@
 name: CI
 
-on:
+on: github.com/farahmandakbar26/desktop/edit/development/.github/workflows/ci.yml
   push:
     branches:
       - development
