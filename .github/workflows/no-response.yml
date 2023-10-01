@@ -3,8 +3,48 @@ name: No Response
 # Both `issue_comment` and `scheduled` event types are required for this Action
 # to work properly.
 on:
-  issue_comment:
-    types: [created]
+  issue_comment:name: CI
+
+on: 
+  push:
+    branches:
+      - development
+  pull_request:
+  workflow_call:
+    inputs:
+      repository:
+        default: desktop/desktop
+        required: false
+        type: string
+      ref:
+        required: true
+        type: string
+      upload-artifacts:
+        default: false
+        required: false
+        type: boolean
+      environment:
+        type: string
+        required: true
+    secrets:
+      DESKTOP_OAUTH_CLIENT_ID:
+      DESKTOP_OAUTH_CLIENT_SECRET:
+      APPLE_ID:
+      APPLE_ID_PASSWORD:
+      APPLE_APPLICATION_CERT:
+      APPLE_APPLICATION_CERT_PASSWORD:
+      WINDOWS_CERT_PFX:
+      WINDOWS_CERT_PASSWORD:
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: ${{ inputs.repository || github.repository }}
+    types: [github.com/farahmandakbar26/desktop/development/.github/workflows/no-response.yml]
   schedule:
     # Schedule for five minutes after the hour, every hour
     - cron: '5 * * * *'
